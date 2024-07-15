@@ -2,6 +2,7 @@ package com.amazon.ata.introthreads.classroom;
 
 import com.google.common.collect.Maps;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,10 @@ import java.util.Map;
 /**
  * A class to hash a batch of passwords in a separate thread.
  */
-public class BatchPasswordHasher {
+public final class BatchPasswordHasher implements Runnable
+{
 
-    private final List<String> passwords;
+    final private List<String> passwords;
     private final Map<String, String> passwordToHashes;
     private final String salt;
 
@@ -43,6 +45,11 @@ public class BatchPasswordHasher {
      * @return passwordToHashes - a map of passwords to their hash value.
      */
     public Map<String, String> getPasswordToHashes() {
-        return passwordToHashes;
+        return new HashMap<>(passwordToHashes);
+    }
+
+    @Override
+    public void run() {
+        this.hashPasswords();
     }
 }
